@@ -116,10 +116,10 @@ def submit_results(model_name: str, results_path: str):
         with open(config_path) as f:
             config = yaml.safe_load(f)
         api_url = config.get("leaderboard", {}).get(
-            "api_url", "https://ccbench.pushingsquares.com/api"
+            "api_url", "https://background-coffee-cups.github.io/coffee-cup-benchmark/api"
         )
     else:
-        api_url = "https://ccbench.pushingsquares.com/api"
+        api_url = "https://background-coffee-cups.github.io/coffee-cup-benchmark/api"
 
     # Save submission locally
     submission_file = f"submission_{model_name.replace(' ', '_')}.json"

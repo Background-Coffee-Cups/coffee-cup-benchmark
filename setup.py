@@ -17,7 +17,7 @@ setup(
     description="Benchmark AI image generation models on background coffee cup resolution",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/pushingsquares/coffee-cup-benchmark",
+    url="https://github.com/Background-Coffee-Cups/coffee-cup-benchmark",
     packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

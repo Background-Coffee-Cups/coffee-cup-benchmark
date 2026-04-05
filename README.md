@@ -2,7 +2,7 @@
 
 A benchmarking framework for evaluating how well AI image generation models resolve coffee cups in the background of images.
 
-**Leaderboard:** [ccbench.pushingsquares.com](https://ccbench.pushingsquares.com) (coming soon)
+**Leaderboard:** [background-coffee-cups.github.io/coffee-cup-benchmark](https://background-coffee-cups.github.io/coffee-cup-benchmark/)
 
 ## Overview
 
@@ -39,7 +39,7 @@ This toolkit provides:
 ### Setup
 
 ```bash
-git clone https://github.com/pushingsquares/coffee-cup-benchmark.git
+git clone https://github.com/Background-Coffee-Cups/coffee-cup-benchmark.git
 cd coffee-cup-benchmark
 python -m venv venv
 source venv/bin/activate
@@ -184,4 +184,4 @@ MIT License - see [LICENSE](LICENSE)
 
 ---
 
-**Made with coffee, for evaluating coffee in AI images** | [Pushing Squares](https://pushingsquares.com)
+**Made with coffee, for evaluating coffee in AI images** | [Background Coffee Cups](https://github.com/Background-Coffee-Cups)

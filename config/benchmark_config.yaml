@@ -14,4 +14,4 @@ benchmark:
   visualization_dpi: 150
 
 leaderboard:
-  api_url: "https://ccbench.pushingsquares.com/api"
+  api_url: "https://background-coffee-cups.github.io/coffee-cup-benchmark/api"
