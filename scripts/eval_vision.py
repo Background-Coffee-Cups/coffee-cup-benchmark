@@ -74,12 +74,26 @@ Be harsh but fair. A slightly soft background cup at appropriate depth-of-field 
 
 
 def get_api_key():
-    result = subprocess.run(
-        ["security", "find-generic-password", "-s", "com.shadow.control",
-         "-a", "apiKey_anthropic", "-w"],
-        capture_output=True, text=True
-    )
-    return result.stdout.strip()
+    import os
+
+    # 1. Environment variable
+    key = os.environ.get("ANTHROPIC_API_KEY", "")
+    if key:
+        return key
+
+    # 2. macOS Keychain fallback
+    try:
+        result = subprocess.run(
+            ["security", "find-generic-password", "-s", "com.shadow.control",
+             "-a", "apiKey_anthropic", "-w"],
+            capture_output=True, text=True
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            return result.stdout.strip()
+    except FileNotFoundError:
+        pass  # Not on macOS
+
+    return ""
 
 
 def encode_image(image_path):
