@@ -60,8 +60,6 @@ Police press conference. An officer speaks at a podium with microphones, sharp f
 
 ## Step 2: Score Your Images
 
-### Option A: Paste into Claude (no code required)
-
 Upload your generated image to [claude.ai](https://claude.ai) and paste this scoring prompt:
 
 <details>
@@ -122,20 +120,6 @@ The **gave_up_score** (0.0–1.0) measures how much the model "gave up" on backg
 
 Be harsh but fair. A slightly soft background cup at appropriate depth-of-field is NOT a failure — it's correct photography. A featureless blob where a cup should be IS a failure.
 </details>
-
-### Option B: Run the script (batch evaluation)
-
-For batch scoring, clone the repo and use the eval script with your Anthropic API key:
-
-```bash
-git clone https://github.com/Background-Coffee-Cups/coffee-cup-benchmark.git
-cd coffee-cup-benchmark
-pip install anthropic
-export ANTHROPIC_API_KEY="sk-ant-..."
-
-python scripts/eval_vision.py --image-dir ./my_images/ --model-name "My Model v1"
-```bash
-The script scores each image, finds every background cup, and outputs a submission JSON.
 
 ---
 
@@ -228,23 +212,6 @@ Best scene: Garage (0.888). Worst: Studio (cup placed in foreground instead of b
 }
 ---
 
-## Repository Structure
-
-```
-coffee-cup-benchmark/
-├── README.md                          # This file — how to run the benchmark
-├── config/
-│   └── prompts.json                   # All 22 standard prompts
-├── scripts/
-│   └── eval_vision.py                 # Claude Vision batch evaluator
-├── docs/
-│   ├── index.html                     # Leaderboard website
-│   └── leaderboard.json               # Current rankings
-├── examples/
-│   └── seedream_fail_*.jpeg           # Failure examples (blob cups)
-├── requirements.txt
-├── LICENSE
-└── .gitignore
 ## License
 
-MIT — [Pushing Squares](https://github.com/Background-Coffee-Cups)
+MIT — [Background Coffee Cups](https://github.com/Background-Coffee-Cups)

@@ -1,5 +1,0 @@
-# Claude Vision evaluator
-anthropic>=0.89.0
-
-# Image generation (optional — SeedReam)
-requests>=2.31.0
