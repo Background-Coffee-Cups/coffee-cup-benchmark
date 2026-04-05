@@ -1,10 +1,13 @@
 [
   {
-    "model": "Awaiting first submission",
-    "quality": 0.0,
-    "detection": 0.0,
-    "semantic": 0.0,
-    "resolution": 0.0,
-    "structure": 0.0
+    "model": "SeedReam 4.5",
+    "quality": 0.533,
+    "detection": 1.00,
+    "semantic": 0.571,
+    "resolution": 0.349,
+    "structure": 0.708,
+    "artifacts": 0.861,
+    "images_tested": 5,
+    "submitted": "2026-04-05"
   }
 ]
