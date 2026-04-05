@@ -1,13 +1,14 @@
 [
   {
-    "model": "SeedReam 4.5",
-    "quality": 0.528,
-    "detection": 1.00,
-    "semantic": 0.571,
-    "resolution": 0.349,
-    "structure": 0.708,
-    "artifacts": 0.805,
-    "images_tested": 5,
+    "model": "SeedReam 4.5 (scene prompts)",
+    "quality": 0.829,
+    "detection": 0.913,
+    "semantic": 0.878,
+    "resolution": 0.730,
+    "structure": 0.813,
+    "artifacts": 0.839,
+    "images_tested": 10,
+    "eval_mode": "claude-vision",
     "submitted": "2026-04-05"
   }
 ]

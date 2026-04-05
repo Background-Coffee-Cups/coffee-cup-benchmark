@@ -1,6 +1,6 @@
 {
-  "version": "1.0",
-  "description": "Standard prompts for coffee cup background resolution benchmark",
+  "version": "1.1",
+  "description": "Standard prompts for coffee cup background resolution benchmark. V1.1 adds complex scenes with people holding cups in the background.",
   "prompts": [
     {
       "id": "office_01",
@@ -73,6 +73,66 @@
       "category": "studio",
       "difficulty": "easy",
       "prompt": "Product photography studio. Camera on tripod in foreground. On a side table in the background, a single porcelain coffee cup sits on a saucer. Clean, minimal studio lighting."
+    },
+    {
+      "id": "scene_garage",
+      "category": "complex",
+      "difficulty": "hard",
+      "prompt": "Two mechanics inspecting the underside of a lifted sports car in a professional garage. Sharp focus on the car and mechanics. In the background near the tool bench, a third mechanic leans against the wall holding a white paper coffee cup. Industrial fluorescent lighting, photojournalistic style, 35mm lens."
+    },
+    {
+      "id": "scene_wedding",
+      "category": "complex",
+      "difficulty": "hard",
+      "prompt": "A bride adjusting her veil in a full-length mirror, sharp focus, soft window light. Behind her in the doorway, two bridesmaids chat — one holding a ceramic coffee mug in her left hand. Shallow depth of field, editorial wedding photography."
+    },
+    {
+      "id": "scene_filmset",
+      "category": "complex",
+      "difficulty": "hard",
+      "prompt": "Film set behind the scenes. A director gestures at a monitor bank in the foreground, sharp focus. Background crew members mill around equipment — one grip holds a to-go coffee cup, a PA has a thermos. Mixed tungsten and daylight, documentary style, handheld feel."
+    },
+    {
+      "id": "scene_hospital",
+      "category": "complex",
+      "difficulty": "hard",
+      "prompt": "Hospital corridor. A surgeon in scrubs reviews a chart in the foreground. Behind them at the nurses' station, two staff members — one holding a small white styrofoam cup of coffee. Harsh overhead fluorescent lighting, realistic medical drama aesthetic."
+    },
+    {
+      "id": "scene_construction",
+      "category": "complex",
+      "difficulty": "hard",
+      "prompt": "Construction site morning briefing. A foreman points at blueprints spread on a folding table, hard hat and high-vis vest sharp in frame. Three workers listen in the background, two holding paper coffee cups. Golden hour side light, dust in the air, photojournalistic."
+    },
+    {
+      "id": "scene_lecture",
+      "category": "complex",
+      "difficulty": "medium",
+      "prompt": "University lecture hall from the back row. Professor at the whiteboard is in focus writing equations. Students scattered across seats in midground — one has a travel mug on the desk, another holds a takeaway cup mid-sip. Flat institutional lighting, candid photography."
+    },
+    {
+      "id": "scene_airport",
+      "category": "complex",
+      "difficulty": "hard",
+      "prompt": "Airport gate waiting area. A businesswoman works on a laptop in the foreground, sharp. Behind her, passengers sit in rows — a man in a suit holds a coffee cup, a woman nearby has a ceramic airport lounge mug. Large windows with overcast daylight, wide angle."
+    },
+    {
+      "id": "scene_streetfood",
+      "category": "complex",
+      "difficulty": "hard",
+      "prompt": "Street food market at dusk. A vendor flips noodles in a flaming wok, sharp focus, dramatic fire light. Customers queue behind — two people in the crowd hold small espresso cups from a nearby coffee cart. Neon signs in background, cinematic 85mm bokeh."
+    },
+    {
+      "id": "scene_studio",
+      "category": "complex",
+      "difficulty": "medium",
+      "prompt": "Recording studio control room. A producer adjusts faders on a mixing console, close-up sharp. Through the glass, a singer stands at a mic. To the right of the console, an engineer sits back holding a ceramic mug. Dim moody lighting, warm tones."
+    },
+    {
+      "id": "scene_police",
+      "category": "complex",
+      "difficulty": "hard",
+      "prompt": "Police press conference. An officer speaks at a podium with microphones, sharp focus. Behind them, a row of officials sit at a long table — one holds a white coffee cup, another has a paper cup next to their nameplate. Harsh camera flash lighting, press pool angle."
     }
   ]
 }

@@ -72,7 +72,10 @@ def main():
     output_dir = Path(__file__).parent.parent / "output" / "seedream_4_5"
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    prompts = prompts_data["prompts"][:5]  # First 5 for initial submission
+    # Filter to only scene_* prompts (complex scenes with BG cup holders)
+    prompts = [p for p in prompts_data["prompts"] if p["id"].startswith("scene_")]
+    if not prompts:
+        prompts = prompts_data["prompts"]
     print(f"Generating {len(prompts)} images with SeedReam 4.5...\n")
 
     results = []

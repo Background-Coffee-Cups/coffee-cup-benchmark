@@ -1,0 +1,52 @@
+[
+  {
+    "id": "scene_garage",
+    "status": "ok",
+    "path": "/private/tmp/coffee-cup-benchmark/output/seedream_4_5/scene_garage.jpg"
+  },
+  {
+    "id": "scene_wedding",
+    "status": "ok",
+    "path": "/private/tmp/coffee-cup-benchmark/output/seedream_4_5/scene_wedding.jpg"
+  },
+  {
+    "id": "scene_filmset",
+    "status": "ok",
+    "path": "/private/tmp/coffee-cup-benchmark/output/seedream_4_5/scene_filmset.jpg"
+  },
+  {
+    "id": "scene_hospital",
+    "status": "ok",
+    "path": "/private/tmp/coffee-cup-benchmark/output/seedream_4_5/scene_hospital.jpg"
+  },
+  {
+    "id": "scene_construction",
+    "status": "ok",
+    "path": "/private/tmp/coffee-cup-benchmark/output/seedream_4_5/scene_construction.jpg"
+  },
+  {
+    "id": "scene_lecture",
+    "status": "ok",
+    "path": "/private/tmp/coffee-cup-benchmark/output/seedream_4_5/scene_lecture.jpg"
+  },
+  {
+    "id": "scene_airport",
+    "status": "ok",
+    "path": "/private/tmp/coffee-cup-benchmark/output/seedream_4_5/scene_airport.jpg"
+  },
+  {
+    "id": "scene_streetfood",
+    "status": "ok",
+    "path": "/private/tmp/coffee-cup-benchmark/output/seedream_4_5/scene_streetfood.jpg"
+  },
+  {
+    "id": "scene_studio",
+    "status": "ok",
+    "path": "/private/tmp/coffee-cup-benchmark/output/seedream_4_5/scene_studio.jpg"
+  },
+  {
+    "id": "scene_police",
+    "status": "ok",
+    "path": "/private/tmp/coffee-cup-benchmark/output/seedream_4_5/scene_police.jpg"
+  }
+]
