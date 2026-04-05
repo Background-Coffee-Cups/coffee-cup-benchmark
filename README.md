@@ -29,53 +29,33 @@ Use these 10 prompts with any image generation model. Each prompt creates a comp
 ### Prompt 1 — Garage
 ```
 Two mechanics inspecting the underside of a lifted sports car in a professional garage. Sharp focus on the car and mechanics. In the background near the tool bench, a third mechanic leans against the wall holding a white paper coffee cup. Industrial fluorescent lighting, photojournalistic style, 35mm lens.
-```
-
 ### Prompt 2 — Wedding
 ```
 A bride adjusting her veil in a full-length mirror, sharp focus, soft window light. Behind her in the doorway, two bridesmaids chat — one holding a ceramic coffee mug in her left hand. Shallow depth of field, editorial wedding photography.
-```
-
 ### Prompt 3 — Film Set
 ```
 Film set behind the scenes. A director gestures at a monitor bank in the foreground, sharp focus. Background crew members mill around equipment — one grip holds a to-go coffee cup, a PA has a thermos. Mixed tungsten and daylight, documentary style, handheld feel.
-```
-
 ### Prompt 4 — Hospital
 ```
 Hospital corridor. A surgeon in scrubs reviews a chart in the foreground. Behind them at the nurses' station, two staff members — one holding a small white styrofoam cup of coffee. Harsh overhead fluorescent lighting, realistic medical drama aesthetic.
-```
-
 ### Prompt 5 — Construction Site
 ```
 Construction site morning briefing. A foreman points at blueprints spread on a folding table, hard hat and high-vis vest sharp in frame. Three workers listen in the background, two holding paper coffee cups. Golden hour side light, dust in the air, photojournalistic.
-```
-
 ### Prompt 6 — Lecture Hall
 ```
 University lecture hall from the back row. Professor at the whiteboard is in focus writing equations. Students scattered across seats in midground — one has a travel mug on the desk, another holds a takeaway cup mid-sip. Flat institutional lighting, candid photography.
-```
-
 ### Prompt 7 — Airport
 ```
 Airport gate waiting area. A businesswoman works on a laptop in the foreground, sharp. Behind her, passengers sit in rows — a man in a suit holds a coffee cup, a woman nearby has a ceramic airport lounge mug. Large windows with overcast daylight, wide angle.
-```
-
 ### Prompt 8 — Street Food Market
 ```
 Street food market at dusk. A vendor flips noodles in a flaming wok, sharp focus, dramatic fire light. Customers queue behind — two people in the crowd hold small espresso cups from a nearby coffee cart. Neon signs in background, cinematic 85mm bokeh.
-```
-
 ### Prompt 9 — Recording Studio
 ```
 Recording studio control room. A producer adjusts faders on a mixing console, close-up sharp. Through the glass, a singer stands at a mic. To the right of the console, an engineer sits back holding a ceramic mug. Dim moody lighting, warm tones.
-```
-
 ### Prompt 10 — Press Conference
 ```
 Police press conference. An officer speaks at a podium with microphones, sharp focus. Behind them, a row of officials sit at a long table — one holds a white coffee cup, another has a paper cup next to their nameplate. Harsh camera flash lighting, press pool angle.
-```
-
 ---
 
 ## Step 2: Score Your Images
@@ -141,31 +121,21 @@ Return ONLY valid JSON, no markdown fencing:
 The **gave_up_score** (0.0–1.0) measures how much the model "gave up" on background cups vs the hero subject. 0.0 = background cups are just as detailed as the hero. 1.0 = model clearly allocated zero effort to background cups (shapeless blobs while hero is crisp).
 
 Be harsh but fair. A slightly soft background cup at appropriate depth-of-field is NOT a failure — it's correct photography. A featureless blob where a cup should be IS a failure.
-```
-
 </details>
 
 ### Option B: Run the script (batch evaluation)
 
-Requires Python 3.9+ and an Anthropic API key.
+For batch scoring, clone the repo and use the eval script with your Anthropic API key:
 
 ```bash
 git clone https://github.com/Background-Coffee-Cups/coffee-cup-benchmark.git
 cd coffee-cup-benchmark
 pip install anthropic
-```
-
-Set your API key:
-```bash
 export ANTHROPIC_API_KEY="sk-ant-..."
-```
 
-Put your generated images in a folder and run:
+python scripts/eval_vision.py --image-dir ./my_images/ --model-name "My Model v1"
 ```bash
-python scripts/eval_vision.py
-```
-
-The script will evaluate each image, score every background cup, and output a submission JSON.
+The script scores each image, finds every background cup, and outputs a submission JSON.
 
 ---
 
@@ -256,33 +226,25 @@ Best scene: Garage (0.888). Worst: Studio (cup placed in foreground instead of b
   "scene_notes": "Model maintained background detail well",
   "gave_up_score": 0.1
 }
-```
-
 ---
 
 ## Repository Structure
 
 ```
 coffee-cup-benchmark/
-├── README.md                          # This file
+├── README.md                          # This file — how to run the benchmark
 ├── config/
 │   └── prompts.json                   # All 22 standard prompts
 ├── scripts/
-│   ├── eval_vision.py                 # Claude Vision evaluator
-│   └── generate_seedream.py           # SeedReam 4.5 image generator
+│   └── eval_vision.py                 # Claude Vision batch evaluator
 ├── docs/
 │   ├── index.html                     # Leaderboard website
 │   └── leaderboard.json               # Current rankings
 ├── examples/
-│   ├── seedream_4_5_test.jpeg         # Good result example
 │   └── seedream_fail_*.jpeg           # Failure examples (blob cups)
-├── output/
-│   └── seedream_4_5/                  # SeedReam benchmark images + results
 ├── requirements.txt
 ├── LICENSE
 └── .gitignore
-```
-
 ## License
 
 MIT — [Pushing Squares](https://github.com/Background-Coffee-Cups)

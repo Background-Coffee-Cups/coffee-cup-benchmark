@@ -84,7 +84,7 @@ def get_api_key():
     # 2. macOS Keychain fallback
     try:
         result = subprocess.run(
-            ["security", "find-generic-password", "-s", "com.shadow.control",
+            ["security", "find-generic-password", "-s", "ccbench",
              "-a", "apiKey_anthropic", "-w"],
             capture_output=True, text=True
         )
@@ -204,6 +204,12 @@ def compute_scores(eval_result):
 
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="CCBench — Claude Vision Evaluator")
+    parser.add_argument("--image-dir", type=str, help="Directory of images to evaluate")
+    parser.add_argument("--model-name", type=str, default="SeedReam 4.5", help="Name of the model being evaluated")
+    args = parser.parse_args()
+
     api_key = get_api_key()
     if not api_key:
         print("ERROR: No Anthropic API key in keychain")
@@ -211,18 +217,23 @@ def main():
 
     client = anthropic.Anthropic(api_key=api_key)
 
-    image_dir = Path(__file__).parent.parent / "output" / "seedream_4_5"
+    if args.image_dir:
+        image_dir = Path(args.image_dir)
+    else:
+        image_dir = Path(".")  # Current directory
     prompts_file = Path(__file__).parent.parent / "config" / "prompts.json"
+
+    model_name = args.model_name
 
     # Load prompts for context
     with open(prompts_file) as f:
         prompts_data = json.load(f)
     prompt_map = {p["id"]: p for p in prompts_data["prompts"]}
 
-    # Get scene_* images
-    images = sorted(image_dir.glob("scene_*.jpg"))
+    # Get images — try scene_* first, then any image
+    images = sorted(image_dir.glob("scene_*.jpg")) + sorted(image_dir.glob("scene_*.png"))
     if not images:
-        images = sorted(image_dir.glob("*.jpg"))
+        images = sorted(image_dir.glob("*.jpg")) + sorted(image_dir.glob("*.png"))
 
     print(f"Evaluating {len(images)} images with Claude Vision...\n")
 
@@ -269,7 +280,7 @@ def main():
     successful = [r for r in all_results if r.get("detection_success")]
 
     print("\n" + "=" * 60)
-    print("SEEDREAM 4.5 — CLAUDE VISION BENCHMARK RESULTS")
+    print(f"{model_name.upper()} — CLAUDE VISION BENCHMARK RESULTS")
     print("=" * 60)
 
     if successful:
@@ -311,7 +322,7 @@ def main():
     if successful:
         qualities = [r["avg_quality"] for r in successful]
         submission = {
-            "model_name": "SeedReam 4.5",
+            "model_name": model_name,
             "submitted_at": datetime.now(timezone.utc).isoformat(),
             "version": "1.0.0",
             "eval_mode": "claude-vision",
@@ -325,7 +336,7 @@ def main():
             "per_image": all_results,
         }
 
-        sub_path = image_dir / "submission_vision_seedream_4_5.json"
+        sub_path = image_dir / f"submission_{model_name.lower().replace(' ', '_')}.json"
         with open(sub_path, "w") as f:
             json.dump(submission, f, indent=2)
         print(f"  Submission:   {sub_path}")

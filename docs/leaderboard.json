@@ -1,12 +1,24 @@
 [
   {
-    "model": "SeedReam 4.5 (scene prompts)",
+    "model": "SeedReam 4.5",
     "quality": 0.829,
     "detection": 0.913,
     "semantic": 0.878,
     "resolution": 0.730,
     "structure": 0.813,
     "artifacts": 0.839,
+    "images_tested": 10,
+    "eval_mode": "claude-vision",
+    "submitted": "2026-04-05"
+  },
+  {
+    "model": "Nano Banana",
+    "quality": 0.782,
+    "detection": 0.850,
+    "semantic": 0.852,
+    "resolution": 0.692,
+    "structure": 0.748,
+    "artifacts": 0.790,
     "images_tested": 10,
     "eval_mode": "claude-vision",
     "submitted": "2026-04-05"
