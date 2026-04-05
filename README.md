@@ -160,11 +160,6 @@ Set your API key:
 export ANTHROPIC_API_KEY="sk-ant-..."
 ```
 
-Or if you use macOS Keychain:
-```bash
-security add-generic-password -s "com.shadow.control" -a "apiKey_anthropic" -w "sk-ant-..." -U
-```
-
 Put your generated images in a folder and run:
 ```bash
 python scripts/eval_vision.py
