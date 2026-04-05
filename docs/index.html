@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCBench — Coffee Cup Background Resolution Benchmark</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --text: #e6edf3;
+            --text-muted: #8b949e;
+            --accent: #c9885a;
+            --accent-light: #e6a96e;
+            --gold: #f0c040;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+            --green: #3fb950;
+            --red: #f85149;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+        header {
+            border-bottom: 1px solid var(--border);
+            padding: 24px 0;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo .cup { font-size: 1.8rem; }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 24px;
+            font-size: 0.9rem;
+        }
+        nav a:hover { color: var(--text); }
+
+        .hero {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+
+        .hero h1 { font-size: 2.4rem; margin-bottom: 12px; }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .hero-badges {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .badge.accent { border-color: var(--accent); color: var(--accent); }
+
+        .leaderboard {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .leaderboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .leaderboard-header h2 { font-size: 1.2rem; }
+
+        .submit-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .submit-btn:hover { background: var(--accent-light); }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        th {
+            text-align: left;
+            padding: 12px 16px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background: rgba(201, 136, 90, 0.05); }
+
+        .rank { font-weight: 700; width: 50px; }
+        .rank-1 { color: var(--gold); }
+        .rank-2 { color: var(--silver); }
+        .rank-3 { color: var(--bronze); }
+
+        .model-name { font-weight: 600; }
+
+        .score { font-family: 'SF Mono', 'Fira Code', monospace; font-weight: 600; }
+        .score-high { color: var(--green); }
+        .score-mid { color: var(--gold); }
+        .score-low { color: var(--red); }
+
+        .bar-cell { position: relative; min-width: 100px; }
+
+        .bar {
+            height: 6px;
+            border-radius: 3px;
+            background: var(--accent);
+            opacity: 0.6;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .metric-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .metric-card h3 {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .metric-card .value { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+        .metric-card .desc { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal h2 { margin-bottom: 16px; }
+        .modal p { color: var(--text-muted); margin-bottom: 20px; font-size: 0.9rem; }
+
+        .modal label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .modal input, .modal textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .modal textarea { min-height: 80px; resize: vertical; }
+
+        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; }
+
+        .btn-cancel {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .how-it-works { padding: 40px 0; border-top: 1px solid var(--border); }
+        .how-it-works h2 { margin-bottom: 24px; }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .step {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .step-num {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #fff;
+            text-align: center;
+            line-height: 28px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .step h3 { font-size: 1rem; margin-bottom: 8px; }
+        .step p { font-size: 0.85rem; color: var(--text-muted); }
+
+        .code-block {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 16px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            margin: 12px 0;
+            color: var(--text-muted);
+            white-space: pre;
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 24px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        footer a { color: var(--accent); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            th, td { padding: 10px 8px; font-size: 0.8rem; }
+            .hide-mobile { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="/" class="logo"><span class="cup">&#9749;</span> CCBench</a>
+            <nav>
+                <a href="#leaderboard">Leaderboard</a>
+                <a href="#how">How It Works</a>
+                <a href="https://github.com/pushingsquares/coffee-cup-benchmark">GitHub</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Coffee Cup Background Resolution Benchmark</h1>
+            <p>How well do AI image generators render coffee cups in the background? A niche but revealing benchmark for spatial reasoning and peripheral detail quality.</p>
+            <div class="hero-badges">
+                <span class="badge accent">7 Quality Metrics</span>
+                <span class="badge">YOLO + OWL-ViT Detection</span>
+                <span class="badge">CLIP Semantic Scoring</span>
+                <span class="badge">Open Source</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="metrics">
+            <div class="metric-card">
+                <h3>Models Tested</h3>
+                <div class="value" id="stat-models">&mdash;</div>
+                <div class="desc">Unique submissions</div>
+            </div>
+            <div class="metric-card">
+                <h3>Images Evaluated</h3>
+                <div class="value" id="stat-images">&mdash;</div>
+                <div class="desc">Total benchmark runs</div>
+            </div>
+            <div class="metric-card">
+                <h3>Top Score</h3>
+                <div class="value" id="stat-top">&mdash;</div>
+                <div class="desc">Highest avg quality</div>
+            </div>
+            <div class="metric-card">
+                <h3>Detection Rate</h3>
+                <div class="value" id="stat-detection">&mdash;</div>
+                <div class="desc">Avg bg cup detection</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container" id="leaderboard">
+        <div class="leaderboard">
+            <div class="leaderboard-header">
+                <h2>Leaderboard</h2>
+                <button class="submit-btn" id="openSubmitBtn">Submit Results</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Model</th>
+                        <th>Quality</th>
+                        <th class="hide-mobile">Detection</th>
+                        <th class="hide-mobile">Semantic</th>
+                        <th class="hide-mobile">Resolution</th>
+                        <th class="hide-mobile">Structure</th>
+                        <th>Bar</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="container how-it-works" id="how">
+        <h2>How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <h3>Generate Images</h3>
+                <p>Use any AI model with the standard prompts from our prompt set. Each prompt places coffee cups in the background of realistic scenes.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <h3>Run Benchmark</h3>
+                <p>Our pipeline detects background cups using YOLO + OWL-ViT, then evaluates each on 7 quality metrics including CLIP semantic coherence.</p>
+                <div class="code-block">pip install -r requirements.txt
+python scripts/run_benchmark.py --image-dir ./outputs/</div>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <h3>Submit Results</h3>
+                <p>Export your results and submit to the leaderboard. Results are validated and ranked by overall quality score.</p>
+                <div class="code-block">python scripts/run_benchmark.py --submit \
+  --model "my-model" --results results.json</div>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <h3>Compare</h3>
+                <p>See how your model stacks up across all metrics. Identify specific weaknesses in semantic understanding, resolution, or artifact generation.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal-overlay" id="submitModal">
+        <div class="modal">
+            <h2>Submit Benchmark Results</h2>
+            <p>Upload your benchmark JSON file or paste the submission data. Results will be validated before appearing on the leaderboard.</p>
+
+            <label for="model-name">Model Name</label>
+            <input type="text" id="model-name" placeholder="e.g., DALL-E 3, Midjourney v6, Flux Pro">
+
+            <label for="submission-data">Submission JSON</label>
+            <textarea id="submission-data" placeholder="Paste the contents of your submission JSON file here..."></textarea>
+
+            <label for="submission-file">Or upload file</label>
+            <input type="file" id="submission-file" accept=".json">
+
+            <div class="modal-actions">
+                <button class="btn-cancel" id="cancelSubmitBtn">Cancel</button>
+                <button class="submit-btn" id="doSubmitBtn">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>CCBench &mdash; <a href="https://pushingsquares.com">Pushing Squares</a> | <a href="https://github.com/pushingsquares/coffee-cup-benchmark">Source on GitHub</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Safe DOM rendering — no innerHTML
+        function createEl(tag, attrs, textContent) {
+            var el = document.createElement(tag);
+            if (attrs) {
+                Object.keys(attrs).forEach(function(key) {
+                    if (key === 'className') {
+                        el.className = attrs[key];
+                    } else {
+                        el.setAttribute(key, attrs[key]);
+                    }
+                });
+            }
+            if (textContent !== undefined) {
+                el.textContent = textContent;
+            }
+            return el;
+        }
+
+        function scoreClass(score) {
+            if (score >= 0.7) return 'score-high';
+            if (score >= 0.5) return 'score-mid';
+            return 'score-low';
+        }
+
+        function rankClass(i) {
+            if (i === 0) return 'rank-1';
+            if (i === 1) return 'rank-2';
+            if (i === 2) return 'rank-3';
+            return '';
+        }
+
+        function renderLeaderboard(data) {
+            var tbody = document.getElementById('leaderboard-body');
+            // Clear existing rows safely
+            while (tbody.firstChild) {
+                tbody.removeChild(tbody.firstChild);
+            }
+
+            var sorted = data.slice().sort(function(a, b) { return b.quality - a.quality; });
+
+            sorted.forEach(function(row, i) {
+                var tr = createEl('tr');
+
+                var rankTd = createEl('td', { className: 'rank ' + rankClass(i) }, '#' + (i + 1));
+                tr.appendChild(rankTd);
+
+                var modelTd = createEl('td', { className: 'model-name' }, row.model);
+                tr.appendChild(modelTd);
+
+                var qualityTd = createEl('td', { className: 'score ' + scoreClass(row.quality) }, row.quality.toFixed(3));
+                tr.appendChild(qualityTd);
+
+                var detectionTd = createEl('td', { className: 'hide-mobile' }, (row.detection * 100).toFixed(0) + '%');
+                tr.appendChild(detectionTd);
+
+                var semanticTd = createEl('td', { className: 'hide-mobile score ' + scoreClass(row.semantic) }, row.semantic.toFixed(3));
+                tr.appendChild(semanticTd);
+
+                var resolutionTd = createEl('td', { className: 'hide-mobile score ' + scoreClass(row.resolution) }, row.resolution.toFixed(3));
+                tr.appendChild(resolutionTd);
+
+                var structureTd = createEl('td', { className: 'hide-mobile score ' + scoreClass(row.structure) }, row.structure.toFixed(3));
+                tr.appendChild(structureTd);
+
+                var barTd = createEl('td', { className: 'bar-cell' });
+                var barDiv = createEl('div', { className: 'bar', style: 'width: ' + (row.quality * 100) + '%' });
+                barTd.appendChild(barDiv);
+                tr.appendChild(barTd);
+
+                tbody.appendChild(tr);
+            });
+
+            // Update stats
+            document.getElementById('stat-models').textContent = sorted.length;
+            document.getElementById('stat-images').textContent = '\u2014';
+            document.getElementById('stat-top').textContent = sorted.length > 0 ? sorted[0].quality.toFixed(3) : '\u2014';
+
+            if (sorted.length > 0) {
+                var avgDetection = sorted.reduce(function(s, r) { return s + r.detection; }, 0) / sorted.length;
+                document.getElementById('stat-detection').textContent = (avgDetection * 100).toFixed(0) + '%';
+            } else {
+                document.getElementById('stat-detection').textContent = '\u2014';
+            }
+        }
+
+        // Load leaderboard data
+        fetch('leaderboard.json')
+            .then(function(r) { return r.ok ? r.json() : Promise.reject(); })
+            .then(function(data) { renderLeaderboard(data); })
+            .catch(function() {
+                renderLeaderboard([
+                    { model: 'Awaiting first submission', quality: 0, detection: 0, semantic: 0, resolution: 0, structure: 0 }
+                ]);
+            });
+
+        // Modal handlers
+        document.getElementById('openSubmitBtn').addEventListener('click', function() {
+            document.getElementById('submitModal').classList.add('active');
+        });
+
+        document.getElementById('cancelSubmitBtn').addEventListener('click', function() {
+            document.getElementById('submitModal').classList.remove('active');
+        });
+
+        document.getElementById('doSubmitBtn').addEventListener('click', function() {
+            var modelName = document.getElementById('model-name').value;
+            var jsonData = document.getElementById('submission-data').value;
+
+            if (!modelName) {
+                alert('Please enter a model name.');
+                return;
+            }
+
+            // Submit via GitHub issue
+            var issueTitle = encodeURIComponent('Leaderboard Submission: ' + modelName);
+            var body = '## Model: ' + modelName + '\n\n### Submission Data\n```json\n' +
+                (jsonData || '(file upload \u2014 please attach)') + '\n```\n\nSubmitted via CCBench web form.';
+            var issueBody = encodeURIComponent(body);
+
+            window.open(
+                'https://github.com/pushingsquares/coffee-cup-benchmark/issues/new?title=' + issueTitle + '&body=' + issueBody + '&labels=submission',
+                '_blank'
+            );
+
+            document.getElementById('submitModal').classList.remove('active');
+        });
+    </script>
+</body>
+</html>

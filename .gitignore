@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Models & Data
+*.pt
+*.pth
+*.onnx
+*.bin
+models/
+data/
+
+# Output (keep structure, ignore contents)
+output/results/*
+output/visualizations/*
+output/reports/*
+!output/.gitkeep
+*_annotated.jpg
+benchmark_analysis.png
+benchmark_results.json
+
+# Config secrets
+.env
+secrets.yaml
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,17 @@
+detector:
+  yolo_model: "yolov8x.pt"
+  yolo_confidence: 0.15
+  owl_model: "google/owlvit-base-patch32"
+  owl_confidence: 0.15
+  nms_threshold: 0.5
+
+evaluator:
+  clip_model: "ViT-B/32"
+  device: "auto"  # auto, cuda, or cpu
+
+benchmark:
+  save_visualizations: true
+  visualization_dpi: 150
+
+leaderboard:
+  api_url: "https://ccbench.pushingsquares.com/api"
