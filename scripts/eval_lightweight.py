@@ -117,7 +117,55 @@ def detect_artifacts(cup_crop):
     if f_sorted[-10] / (f_sorted[-100] + 1) > 5:
         penalties += 0.15
 
+    # Sharpness inconsistency: text vs surface
+    # AI models render sharp text/logos on soft background objects.
+    # Real cameras blur text and surface equally at the same depth.
+    penalties += detect_sharpness_inconsistency(gray)
+
     return max(0.0, 1.0 - penalties)
+
+
+def detect_sharpness_inconsistency(gray):
+    """
+    Penalize when fine detail (text/logos) is sharper than the surrounding
+    surface. Splits crop into a grid, measures local Laplacian variance,
+    penalizes when max-cell sharpness greatly exceeds median.
+    """
+    h, w = gray.shape
+    if h < 30 or w < 30:
+        return 0.0
+
+    grid = 4
+    cell_h, cell_w = h // grid, w // grid
+    sharpness_values = []
+
+    for gy in range(grid):
+        for gx in range(grid):
+            cell = gray[gy * cell_h:(gy + 1) * cell_h,
+                        gx * cell_w:(gx + 1) * cell_w]
+            lap_var = cv2.Laplacian(cell, cv2.CV_64F).var()
+            sharpness_values.append(lap_var)
+
+    if not sharpness_values:
+        return 0.0
+
+    sharpness_values = np.array(sharpness_values)
+    median_sharp = np.median(sharpness_values)
+    max_sharp = np.max(sharpness_values)
+
+    if median_sharp < 1:
+        return 0.0
+
+    ratio = max_sharp / (median_sharp + 1e-6)
+
+    if ratio > 8:
+        return 0.25
+    elif ratio > 6:
+        return 0.15
+    elif ratio > 4:
+        return 0.05
+
+    return 0.0
 
 
 def evaluate_color_coherence(cup_crop):

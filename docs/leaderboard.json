@@ -1,12 +1,12 @@
 [
   {
     "model": "SeedReam 4.5",
-    "quality": 0.533,
+    "quality": 0.528,
     "detection": 1.00,
     "semantic": 0.571,
     "resolution": 0.349,
     "structure": 0.708,
-    "artifacts": 0.861,
+    "artifacts": 0.805,
     "images_tested": 5,
     "submitted": "2026-04-05"
   }
