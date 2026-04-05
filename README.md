@@ -1,33 +1,45 @@
 # Coffee Cup Background Resolution Benchmark
 
-A benchmarking framework for evaluating how well AI image generation models resolve coffee cups in the background of images.
+AI image generators put all their effort into the hero subject and *give up* on background objects. This benchmark measures exactly that.
+
+Generate a normal scene — an office, a cafe, a pit lane — where someone in the background is holding a coffee cup. Then measure whether the model actually resolved that cup into a coherent object or just painted a shapeless blob.
 
 **Leaderboard:** [background-coffee-cups.github.io/coffee-cup-benchmark](https://background-coffee-cups.github.io/coffee-cup-benchmark/)
+
+## The Problem
+
+![Failure example](examples/seedream_fail_01.jpeg)
+
+*SeedReam 4.5 rendering a BMW pit lane scene. The cars are flawless. The background coffee cups are shapeless blobs — no handles, no rims, no structure. The model allocated its entire detail budget to the hero subjects and gave up on the cups.*
+
+This is not a cherry-picked failure. It happens consistently across models: the further an object is from the focal point, the less coherent it becomes. Coffee cups are the canary in the coal mine — they have specific structural features (handle, rim, cylindrical body) that are easy to verify and impossible to fake with a generic blur.
+
+## What This Benchmark Tests
+
+- **Does the model resolve background objects or just paint blobs?**
+- **Is the detail consistent across depth?** (sharp text on soft cups = artifact)
+- **Are structural features preserved?** (handle, rim, cylindrical shape)
+- **Does the model understand depth-of-field?** (appropriate blur, not just low effort)
 
 ## Overview
 
 This toolkit provides:
 - **Multi-model detection** (YOLO + OWL-ViT) for robust cup identification
 - **Background/foreground classification** based on spatial reasoning
-- **7-metric quality evaluation** system assessing:
-  - Semantic coherence (CLIP-based)
-  - Visual resolution (sharpness, detail)
-  - Structural quality (cup-like features)
-  - Artifact detection
-  - Color coherence
-  - Edge quality
-  - Detection confidence
-- **Comprehensive reporting** with visualizations
-- **Model comparison** tools
-- **Leaderboard submission** for cross-model ranking
+- **7-metric quality evaluation** including sharpness-consistency detection
+- **Leaderboard** with submission system for cross-model ranking
 
-## Why Background Coffee Cups?
+## Why Coffee Cups?
 
-- Tests spatial reasoning beyond the focal point
-- Reveals if models "forget" background details during generation
-- Measures depth-of-field understanding
-- Practical for product photography and scene composition
-- Exposes common AI artifacts in peripheral regions
+Coffee cups appear naturally in almost every indoor scene. They have distinctive structural features that are easy to evaluate programmatically: a handle, a rim, a cylindrical body, consistent surface texture. When a model "gives up" on a background cup, it's immediately visible — and measurable.
+
+| What it reveals | Why it matters |
+|-----------------|----------------|
+| Background detail allocation | Models that only render hero subjects fail real-world use |
+| Depth-of-field understanding | Appropriate blur vs low-effort smearing |
+| Structural coherence at distance | Can the model maintain object identity in the periphery? |
+| Sharpness consistency | Sharp fake text on soft cups = AI artifact |
+| Scene composition fidelity | Product photography, film stills, editorial — all need consistent backgrounds |
 
 ## Installation
 
