@@ -14,11 +14,11 @@ Generate a normal scene — an office, a garage, a hospital corridor — where s
 
 ## How the Benchmark Works
 
-1. **Generate images** using any AI model with the standard prompts below
-2. **Score each image** by pasting it into Claude with the scoring prompt (or run the script)
+1. **Generate images** using any AI model with the 10 prompts below
+2. **Score each image** by uploading it to Claude with the scoring prompt
 3. **Submit your results** to the leaderboard
 
-The evaluator uses Claude's vision to find every background coffee cup and score it on 7 metrics. No GPU required, no model downloads, no torch — just an Anthropic API key.
+No code. No dependencies. Just Claude and your images.
 
 ---
 
@@ -27,35 +27,65 @@ The evaluator uses Claude's vision to find every background coffee cup and score
 Use these 10 prompts with any image generation model. Each prompt creates a complex, realistic scene where the hero subject is NOT a coffee cup — but someone in the background is holding one.
 
 ### Prompt 1 — Garage
+
 ```
 Two mechanics inspecting the underside of a lifted sports car in a professional garage. Sharp focus on the car and mechanics. In the background near the tool bench, a third mechanic leans against the wall holding a white paper coffee cup. Industrial fluorescent lighting, photojournalistic style, 35mm lens.
+```
+
 ### Prompt 2 — Wedding
+
 ```
 A bride adjusting her veil in a full-length mirror, sharp focus, soft window light. Behind her in the doorway, two bridesmaids chat — one holding a ceramic coffee mug in her left hand. Shallow depth of field, editorial wedding photography.
+```
+
 ### Prompt 3 — Film Set
+
 ```
 Film set behind the scenes. A director gestures at a monitor bank in the foreground, sharp focus. Background crew members mill around equipment — one grip holds a to-go coffee cup, a PA has a thermos. Mixed tungsten and daylight, documentary style, handheld feel.
+```
+
 ### Prompt 4 — Hospital
+
 ```
 Hospital corridor. A surgeon in scrubs reviews a chart in the foreground. Behind them at the nurses' station, two staff members — one holding a small white styrofoam cup of coffee. Harsh overhead fluorescent lighting, realistic medical drama aesthetic.
+```
+
 ### Prompt 5 — Construction Site
+
 ```
 Construction site morning briefing. A foreman points at blueprints spread on a folding table, hard hat and high-vis vest sharp in frame. Three workers listen in the background, two holding paper coffee cups. Golden hour side light, dust in the air, photojournalistic.
+```
+
 ### Prompt 6 — Lecture Hall
+
 ```
 University lecture hall from the back row. Professor at the whiteboard is in focus writing equations. Students scattered across seats in midground — one has a travel mug on the desk, another holds a takeaway cup mid-sip. Flat institutional lighting, candid photography.
+```
+
 ### Prompt 7 — Airport
+
 ```
 Airport gate waiting area. A businesswoman works on a laptop in the foreground, sharp. Behind her, passengers sit in rows — a man in a suit holds a coffee cup, a woman nearby has a ceramic airport lounge mug. Large windows with overcast daylight, wide angle.
+```
+
 ### Prompt 8 — Street Food Market
+
 ```
 Street food market at dusk. A vendor flips noodles in a flaming wok, sharp focus, dramatic fire light. Customers queue behind — two people in the crowd hold small espresso cups from a nearby coffee cart. Neon signs in background, cinematic 85mm bokeh.
+```
+
 ### Prompt 9 — Recording Studio
+
 ```
 Recording studio control room. A producer adjusts faders on a mixing console, close-up sharp. Through the glass, a singer stands at a mic. To the right of the console, an engineer sits back holding a ceramic mug. Dim moody lighting, warm tones.
+```
+
 ### Prompt 10 — Press Conference
+
 ```
 Police press conference. An officer speaks at a podium with microphones, sharp focus. Behind them, a row of officials sit at a long table — one holds a white coffee cup, another has a paper cup next to their nameplate. Harsh camera flash lighting, press pool angle.
+```
+
 ---
 
 ## Step 2: Score Your Images
@@ -119,6 +149,8 @@ Return ONLY valid JSON, no markdown fencing:
 The **gave_up_score** (0.0–1.0) measures how much the model "gave up" on background cups vs the hero subject. 0.0 = background cups are just as detailed as the hero. 1.0 = model clearly allocated zero effort to background cups (shapeless blobs while hero is crisp).
 
 Be harsh but fair. A slightly soft background cup at appropriate depth-of-field is NOT a failure — it's correct photography. A featureless blob where a cup should be IS a failure.
+```
+
 </details>
 
 ---
@@ -127,7 +159,7 @@ Be harsh but fair. A slightly soft background cup at appropriate depth-of-field 
 
 Open a [GitHub Issue](https://github.com/Background-Coffee-Cups/coffee-cup-benchmark/issues/new?labels=submission) with:
 - Model name and version
-- Your submission JSON (from the script or manually assembled)
+- Your JSON scores for each image
 - Number of images tested
 
 Or use the submit button on the [leaderboard site](https://background-coffee-cups.github.io/coffee-cup-benchmark/).
@@ -168,21 +200,10 @@ Measures how much the model abandoned background detail compared to the hero sub
 
 ## Current Results
 
-### SeedReam 4.5
-
-| Metric | Score |
-|--------|-------|
-| **Overall Quality** | **0.829** |
-| Detection | 0.913 |
-| Semantic Quality | 0.878 |
-| Artifact Score | 0.839 |
-| Structural Quality | 0.813 |
-| Visual Resolution | 0.730 |
-| Gave-Up Score | 0.18 |
-| Images | 10 |
-| BG Cups Found | 13 |
-
-Best scene: Garage (0.888). Worst: Studio (cup placed in foreground instead of background).
+| Rank | Model | Quality | Detection | Semantic | Resolution | Structure | Artifacts | Gave Up |
+|------|-------|---------|-----------|----------|------------|-----------|-----------|---------|
+| #1 | SeedReam 4.5 | **0.829** | 0.913 | 0.878 | 0.730 | 0.813 | 0.839 | 0.18 |
+| #2 | Nano Banana | **0.782** | 0.850 | 0.852 | 0.692 | 0.748 | 0.790 | 0.25 |
 
 ---
 
@@ -210,6 +231,8 @@ Best scene: Garage (0.888). Worst: Studio (cup placed in foreground instead of b
   "scene_notes": "Model maintained background detail well",
   "gave_up_score": 0.1
 }
+```
+
 ---
 
 ## License
